@@ -1,4 +1,8 @@
-/__pycache__
-*.log
-/ve
-.env
+fetcher/__pycache__
+fetcher/*.log
+fetcher/ve
+fetcher/.env
+notifier/__pycache__
+notifier/*.log
+notifier/ve
+notifier/.env
