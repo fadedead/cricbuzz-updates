@@ -8,7 +8,7 @@ class Menu:
         self.active_matches = active_match_ids
         self.non_active_matches = non_active_match_ids
 
-    def get_match_name(self, match_id):
+    def get_match_name(self, match_id) -> str:
         """
         Returns the match name for the given match ID
         """
@@ -17,7 +17,7 @@ class Menu:
         team2 = match_header.get("team2", {}).get("shortName", "")
         return f"{team1} vs {team2}"
 
-    def menu(self):
+    def menu(self) -> tuple:
         """
         Menu function
         """
@@ -30,29 +30,29 @@ class Menu:
             for match_id in self.non_active_matches
         ]
 
+        print("Inactive matches:")
+        if not non_active_matches:
+            print("No matches")
+        else:
+            for match in non_active_matches:
+                print(match)
+        print("\n" * 2)
+
         print("Active matches:")
         if not active_matches:
             print("No active matches")
         else:
             for match in active_matches:
                 print(match)
-
         print("\n" * 2)
-        print("Complete matches:")
-        if not non_active_matches:
-            print("No complete matches")
-        else:
-            for match in non_active_matches:
-                print(match)
 
-        print("\n" * 2)
-        print("1. Fetch commentary for past matches")
+        print("1. Fetch commentary for non-active matches")
         print("2. Fetch commentary for active matches")
         print("3. Exit")
 
         return self._handle_input()
 
-    def _handle_input(self):
+    def _handle_input(self) -> tuple:
         choice = input("Enter your choice: ")
         return self._handle_choice(choice)
 
@@ -68,7 +68,7 @@ class Menu:
                     print(f"Match {match_id} is not a valid match")
                     print("Please try again.")
                     return self._handle_input()
-            return "PAST_MATCHES", id_list
+            return "NON_ACTIVE_MATCHES", id_list
         elif choice == "2":
             id_input = input("Enter the match ID separated by commas (id1, id2):")
             id_list = [int(value.strip()) for value in id_input.split(",")]

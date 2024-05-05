@@ -6,7 +6,10 @@ from filehandler import Filehandler
 mongodb = Database()
 
 
-class Notifier:
+class NotificationSender:
+    def clear_all_sent_notifications(self, user_id: str) -> None:
+        mongodb.clear_match_ids(user_id)
+
     def notify(self, user_id: str, match_id: str, message: str, timestamp: int) -> None:
         """
         Notifies the user

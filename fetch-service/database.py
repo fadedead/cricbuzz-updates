@@ -1,8 +1,7 @@
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
-
 from environment import Environment
 from logger import Logger
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 
 env = Environment.get_instance()
 
@@ -31,7 +30,7 @@ class Database:
             Logger.log_error(f"Error checking if match exists: {e}")
             raise e
 
-    def upsert_match(self, match: dict):
+    def upsert_match(self, match: dict) -> None:
         """
         Inserts a match into the database
         """
@@ -76,7 +75,7 @@ class Database:
             )
             session.abort_transaction()
 
-    def close(self):
+    def close(self) -> None:
         """
         Closes the database connection
         """

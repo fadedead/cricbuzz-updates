@@ -1,8 +1,7 @@
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
-
 from environment import Environment
 from logger import Logger
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 
 env = Environment.get_instance()
 
@@ -37,9 +36,7 @@ class Database:
         Fetches the non-active match ids from the database
         """
         try:
-            non_active_matches = self.db.matches.find(
-                {"matchHeader.state": {"$ne": "In Progress"}}
-            )
+            non_active_matches = self.db.matches.find({"matchHeader.state": "Complete"})
             return {match["_id"] for match in non_active_matches}
         except Exception as e:
             Logger.log_error(f"Error fetching non-active match IDs: {e}")
@@ -89,7 +86,7 @@ class Database:
             Logger.log_error(f"Error adding user {user_id}: {e}")
             raise e
 
-    def add_match_id_if_not_exists(self, user_id: str, match_id: str):
+    def add_match_id_if_not_exists(self, user_id: str, match_id: str) -> None:
         """
         Adds a match ID to a user if it doesn't already exist
         """
@@ -221,7 +218,7 @@ class Database:
             Logger.log_error(f"Error clearing match IDs for user {user_id}: {e}")
             raise e
 
-    def close(self):
+    def close(self) -> None:
         """
         Closes the database connection
         """
