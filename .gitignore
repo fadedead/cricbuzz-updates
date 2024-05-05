@@ -6,3 +6,4 @@ notification-service/__pycache__
 notification-service/*.log
 notification-service/ve
 notification-service/.env
+notification-service/defaultuser
