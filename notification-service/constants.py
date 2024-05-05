@@ -3,4 +3,4 @@ Constants
 """
 
 # Notifier
-POLL_INTERVAL = 1
+POLL_INTERVAL = 10

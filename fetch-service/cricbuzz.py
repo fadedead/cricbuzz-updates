@@ -1,7 +1,8 @@
 import re
 
-import constants
 import requests
+
+import constants
 from logger import Logger
 
 

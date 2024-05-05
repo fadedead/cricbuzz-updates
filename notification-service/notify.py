@@ -14,11 +14,10 @@ class Notifier:
         unique, notifications = self._check_notification_unique(
             user_id, match_id, timestamp
         )
-        print(unique, notifications)
         if unique:
-            print(message)
             file = Filehandler.get_instance(user_id)
             file.append_to_file(message)
+            print(message)
             notification_hash = self._generate_hash(user_id, match_id, timestamp)
             notifications[notification_hash] = timestamp
             mongodb.update_user_notifications(
@@ -33,7 +32,6 @@ class Notifier:
         """
         notifications = mongodb.fetch_user_notifications(user_id, match_id)
         notification_hash = self._generate_hash(user_id, match_id, timestamp)
-        print(notification_hash not in notifications)
         if notification_hash not in notifications:
             return True, notifications
         return False, notifications

@@ -2,6 +2,8 @@ import os
 
 from dotenv import load_dotenv
 
+from logger import Logger
+
 
 class Environment:
     _instance = None
@@ -17,12 +19,16 @@ class Environment:
         """
         Loads the environment variables from the .env file
         """
-        load_dotenv(self.env_file)
-        self.mongo_protocol = os.getenv("MONGO_PROTOCOL")
-        self.mongo_user = os.getenv("MONGO_USER")
-        self.mongo_pwd = os.getenv("MONGO_PWD")
-        self.mongo_host = os.getenv("MONGO_HOST")
-        self.mongo_options = os.getenv("MONGO_OPTIONS")
+        try:
+            load_dotenv(self.env_file)
+            self.mongo_protocol = os.getenv("MONGO_PROTOCOL")
+            self.mongo_user = os.getenv("MONGO_USER")
+            self.mongo_pwd = os.getenv("MONGO_PWD")
+            self.mongo_host = os.getenv("MONGO_HOST")
+            self.mongo_options = os.getenv("MONGO_OPTIONS")
+        except Exception as e:
+            Logger.log_error(f"Error loading environment variables: {e}")
+            raise e
 
     def get_mongo_uri(self) -> str:
         """

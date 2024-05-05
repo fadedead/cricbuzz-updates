@@ -1,8 +1,8 @@
-fetcher/__pycache__
-fetcher/*.log
-fetcher/ve
-fetcher/.env
-notifier/__pycache__
-notifier/*.log
-notifier/ve
-notifier/.env
+fetch-service/__pycache__
+fetch-service/*.log
+fetch-service/ve
+fetch-service/.env
+notification-service/__pycache__
+notification-service/*.log
+notification-service/ve
+notification-service/.env

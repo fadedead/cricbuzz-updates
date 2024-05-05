@@ -25,7 +25,11 @@ class Database:
         """
         Checks if a match exists in the database
         """
-        return self.db.matches.find_one({"_id": match_id})
+        try:
+            return self.db.matches.find_one({"_id": match_id})
+        except Exception as e:
+            Logger.log_error(f"Error checking if match exists: {e}")
+            raise e
 
     def upsert_match(self, match: dict):
         """
@@ -37,12 +41,12 @@ class Database:
             match["fullCommentaryExists"] = False
             self.db.matches.update_one({"_id": match_id}, {"$set": match}, upsert=True)
         except Exception as e:
-            Logger.log_error(f"Error inserting match {match_id} into the database: {e}")
+            Logger.log_error(f"Error inserting match into the database: {e}")
             raise e
 
-    def update_full_commentary(self, match_id: int, commentary: list) -> None:
+    def update_commentary(self, match_id: int, commentary: list) -> None:
         """
-        Updates the full commentary of a match in the database
+        Updates commentary of a match in the database
         """
         session = self.client.start_session()
         try:
@@ -50,13 +54,7 @@ class Database:
                 # Update the commentary
                 self.db.commentaries.update_one(
                     {"_id": match_id},
-                    {
-                        "$set": {
-                            "commentary": self._create_unique_timestamp_array(
-                                commentary
-                            )
-                        }
-                    },
+                    {"$set": {"commentary": commentary}},
                     session=session,
                     upsert=True,
                 )
@@ -78,19 +76,12 @@ class Database:
             )
             session.abort_transaction()
 
-    def _create_unique_timestamp_array(self, original_array: list):
-        unique_timestamps = set()
-        unique_objects = []
-
-        for obj in original_array:
-            if obj["timestamp"] not in unique_timestamps:
-                unique_timestamps.add(obj["timestamp"])
-                unique_objects.append(obj)
-
-        return unique_objects
-
     def close(self):
         """
         Closes the database connection
         """
-        self.client.close()
+        try:
+            self.client.close()
+        except Exception as e:
+            Logger.log_error(f"Error closing the database connection: {e}")
+            raise e
